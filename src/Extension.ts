@@ -152,15 +152,7 @@ const commandHandler = async () => {
 }
 
 const reloadPresence = (client:discord.Client) => {
-    const activity = new discord.RichPresence()
-        .setApplicationId("817229550684471297")
-        .setType("PLAYING")
-        .setName("Dead By Daylight")
-        .setStartTimestamp(new Date(global.startTime))
-        .setAssetsLargeImage("https://media.discordapp.net/attachments/1153720130178654218/1171654579188944987/image0.gif?ex=655d775b&is=654b025b&hm=4e2975b91e714a904e7c1b2d590a2aea7910a100d88d7ea7f65b55fc769738ff&")
-        .setAssetsLargeText("Dead By Daylight")
-    client.user?.setActivity(activity.toJSON())
-    client.user?.setStatus("online")
+    client.user?.setStatus("idle")
 }
 
 const solveCaptcha = async (url?:string, huntbotCaptcha = false) => {
