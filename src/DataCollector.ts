@@ -21,10 +21,10 @@ const listAccount = (data: {[key:string]: Configuration}) => {
         message: "Select an accout to login",
         choices: [
             ...new Set(Object.keys(data).map(user => ({name: data[user].tag, value: user}))),
-            {name: "New Account (Sign In With Token)", value: "0"},
-            {name: "New Account (Sign In With QR Code)", value: "1"},
-            {name: "New Account (Sign In With Password - MFA Required)", value: "2"},
-            {name: "About Us", value: "3", disabled: true},
+            {name: "Masuk Menggunakan [ TOKEN ]", value: "0"},
+            {name: "Masuk Menggunakan [ QR CODE ]", value: "1"},
+            {name: "Masuk Menggunakan [ PASSWORD, A2F ]", value: "2"},
+            {name: "Lainnya", value: "3", disabled: true},
         ]
     })
 }
@@ -32,7 +32,7 @@ const listAccount = (data: {[key:string]: Configuration}) => {
 const getToken = ()=> {
     return new InquirerInputQuestion<{ answer: string }>({
         type: "input",
-        message: "Enter Your Token",
+        message: "Masukan Token: ",
         validate: (token: string) => {
             return token.split(".").length === 3 ? true : "Invalid Token";
         }
@@ -42,21 +42,21 @@ const getToken = ()=> {
 const getAccount = () => {
     const username = new InquirerInputQuestion<{ answer: string }>({
         type: "input",
-        message: "Enter Your Email/Phone Number: ",
+        message: "Masukan Email/Nomor: ",
         validate(ans:string) {
             return ans.match(/^((\+?\d{1,2}\s?)?(\d{3}\s?\d{3}\s?\d{4}|\d{10}))|([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/) ? true : "Invalid Email/Phone Number";
         }
     })
     const password = new InquirerInputQuestion<{ answer: string }>({
         type: "input",
-        message: "Enter Your Password: ",
+        message: "Masukan Password: ",
         validate(ans:string) {
             return ans.match(/^.+$/) ? true : "Invalid Input";
         }
     })
     const mfaCode = new InquirerInputQuestion<{ answer: string }>({
         type: "input",
-        message: "Enter Your 2FA/Backup Code: ",
+        message: "Masukkan A2f/Code: ",
         validate: (ans:string) => {
             return ans.match(/^([0-9]{6}|[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4})$/) ? true : "Invalid 2FA/Backup Code"
         }
@@ -67,7 +67,7 @@ const getAccount = () => {
 const listGuild = (cache?: string) => {
     return new InquirerListQuestion<{ answer: string }>({
         type: "list",
-        message: "Select a guild to farm",
+        message: "Server Untuk Farm: ",
         choices: client.guilds.cache.map((guild) => ({name: guild.name, value: guild.id})),
         default: cache
     })
@@ -77,7 +77,7 @@ const listChannel = (cache?: string[]) => {
     const guild = client.guilds.cache.get(guildID)!
     return new InquirerCheckboxQuestion<{ answer: string[] }>({
         type: "checkbox",
-        message: "Select channels to farm (Farming Channel will be changed randomly if multiple channels are selected)",
+        message: "Channel Untuk Farm: ",
         choices: guild.channels.cache
             .filter((cnl) => (cnl.type == "GUILD_NEWS" || cnl.type == "GUILD_TEXT") && cnl.permissionsFor(guild.members.me!).has(["VIEW_CHANNEL", "SEND_MESSAGES"]))
             .map(ch => ({name: ch.name, value: ch.id})),
@@ -91,12 +91,12 @@ const listChannel = (cache?: string[]) => {
 const wayNotify = (cache?: number[]) => {
     return new InquirerCheckboxQuestion<{ answer: number[] }>({
         type: "checkbox",
-        message: "Select how you want to be notified when selfbot receives a captcha",
+        message: "Notifikasi Captcha: ",
         choices: [
-            {name: "Music", value: 0},
-            {name: "Webhook", value: 1}, 
-            {name: "Direct Message (Friends Only)", value: 2}, 
-            {name: "Call (Friends Only)", value: 3}
+            {name: "Musik", value: 0},
+            {name: "Webhooks", value: 1}, 
+            {name: "Melalui Chat Teman", value: 2}, 
+            {name: "Melalui Panggilan Teman", value: 3}
         ],
         default: cache
     })
@@ -105,7 +105,7 @@ const wayNotify = (cache?: number[]) => {
 const webhook = (cache?:string) => {
     return new InquirerInputQuestion<{ answer: string }>({
         type: "input",
-        message: "Enter your webhook link",
+        message: "Masukkan Link Webhooks: ",
         validate: (answer:string) => {
             return answer.match(/(^.*(discord|discordapp)\.com\/api\/webhooks\/([\d]+)\/([a-zA-Z0-9_-]+)$)/gm) ? true : "Invalid Webhook"
         },
@@ -116,7 +116,7 @@ const webhook = (cache?:string) => {
 const userNotify = (cache?:string) => {
     return new InquirerInputQuestion<{ answer: string }>({
         type: "input",
-        message: "Enter user ID you want to be notified via Webhook/Call/Direct Message",
+        message: "Masukkan User ID Untuk Notifikasi: ",
         validate: async (answer:string) => {
             if((waynotify.includes(2) || waynotify.includes(3)) && /^\d{17,19}$/.test(answer)) {
                 if(answer == client.user?.id) return "Selfbot ID is not valid for Call/DMs option"
@@ -247,8 +247,8 @@ const gemOrder = (cache?:number) => {
         message: "Select your gem usage order",
         choices:[
             { name: "Skip", value: -1 },
-            { name: "Best to Worst", value: 0 },
-            { name: "Worst to Best", value: 1 }
+            { name: "Common to Fabled", value: 0 },
+            { name: "Fabled to Common", value: 1 }
         ],
         default: cache
     })
