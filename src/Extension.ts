@@ -155,17 +155,12 @@ const reloadPresence = (client:discord.Client) => {
     const activity = new discord.RichPresence()
         .setApplicationId("817229550684471297")
         .setType("PLAYING")
-        .setName("I AM ETERNITYYY")
-        .setDetails("Simply fulfilling my duties")
+        .setName("Dead By Daylight")
         .setStartTimestamp(new Date(global.startTime))
-        .setAssetsLargeImage("mp:attachments/1112736530243522740/1134462426956435546/9wrvM38.png")
-        .setAssetsLargeText("You Dare Challenge me?")
-        .setAssetsSmallImage("mp:avatars/749103042581889168/16f85900e27694838e415af9f039953a.webp")
-        .setAssetsSmallText("BKI Eternity_VN")
-        .addButton('Github', "https://github.com/LongAKolangle/discord-owo-selfbot")
-        .addButton('Youtube', "https://youtube.com/@EternityNqu")
+        .setAssetsLargeImage("https://media.discordapp.net/attachments/1153720130178654218/1171654579188944987/image0.gif?ex=655d775b&is=654b025b&hm=4e2975b91e714a904e7c1b2d590a2aea7910a100d88d7ea7f65b55fc769738ff&")
+        .setAssetsLargeText("Dead By Daylight")
     client.user?.setActivity(activity.toJSON())
-    client.user?.setStatus("idle")
+    client.user?.setStatus("online")
 }
 
 const solveCaptcha = async (url?:string, huntbotCaptcha = false) => {
