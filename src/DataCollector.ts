@@ -18,7 +18,7 @@ autosell:boolean, autohunt:boolean, upgradetrait:number, autogamble:string[], ga
 const listAccount = (data: {[key:string]: Configuration}) => {
     return new InquirerListQuestion<{ answer: string }>({
         type: "list",
-        message: "Select an accout to login",
+        message: "Pilih Akun Kamu :",
         choices: [
             ...new Set(Object.keys(data).map(user => ({name: data[user].tag, value: user}))),
             {name: "Masuk Menggunakan [ TOKEN ]", value: "0"},
