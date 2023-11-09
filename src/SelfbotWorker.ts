@@ -11,7 +11,7 @@ import { quotes } from "./lib/data.js";
 
 let timeoutChannel = ranInt(17, 51), timeoutShift = ranInt(38, 92), timeoutOther:number, timeoutPray:number,
 timeoutSleep = mapInt(timeoutShift, 38, 92, 160_000, 1_275_000), timeoutDelay = ranInt(15000, 17000), timeoutHuntbot:number
-let ordinary = ["h", "b", "h", "b", "h"], other = ["run", "pup", "piku"],
+let ordinary = ["h", "hunt"], ordinary2 = ["b", "battle"], other = ["run", "pup", "piku"],
 box = false, inv:string[], gem1:number[] | undefined, gem2:number[] | undefined, gem3:number[] | undefined
 const traits = ["Efficiency", "Duration", "Cost", "Gain", "Experience", "Radar"]
 
@@ -229,6 +229,8 @@ export const main = async () => {
     if(global.lastTime && Date.now() - global.lastTime < 15_000) return;
     const cmd = ordinary[ranInt(0, ordinary.length)]
     await send(cmd, (global.config.autoSlash && ranInt(0, 4) === 3) ? "slashCommand" : "normalCommand")
+    const cmd2 = ordinary2[ranInt(0, ordinary2.length)]
+    await send(cmd2, (global.config.autoSlash && ranInt(0, 4) === 3) ? "slashCommand" : "normalCommand")
     global.lastTime = Date.now()
     if((cmd.includes("hunt") || cmd.endsWith("h")) && global.config.autoGem >= 0) {
         const filter = (msg:Message<boolean>) => msg.author.id == global.owoID && msg.content.includes(msg.guild?.members.me?.displayName!) && /hunt is empowered by| spent 5 .+ and caught a/.test(msg.content)
